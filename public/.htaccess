@@ -1,0 +1,19 @@
+# Apache / LiteSpeed (Hostinger) settings for the POS web root.
+Options -Indexes
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Force HTTPS (Hostinger provides free SSL; enable it in hPanel first).
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+</IfModule>
+
+<FilesMatch "\.(sqlite|log|md|sql|bak)$">
+  Require all denied
+</FilesMatch>
